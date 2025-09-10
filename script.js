@@ -2,54 +2,46 @@
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 const checkbox = document.getElementById("checkbox");
-const btn = document.getElementById("submit");
 const existing = document.getElementById("existing");
 const form = document.getElementById("loginForm");
 
-// Helper: show/hide existing button based on storage
-function updateExistingButtonVisibility() {
-  if (localStorage.getItem("user")) {
-    existing.style.display = "inline-block";
-  } else {
-    existing.style.display = "none";
-  }
+// Ensure existing button visibility reflects storage on page load
+if (localStorage.getItem("username") && localStorage.getItem("password")) {
+  existing.style.display = "inline-block";
+} else {
+  existing.style.display = "none";
 }
 
-// On page load, ensure the existing button visibility is correct
-updateExistingButtonVisibility();
-
-// Handle form submit (works for clicking submit button or pressing Enter)
+// Handle form submit (Enter key + clicking Submit)
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const userObj = {
-    username: username.value.trim(),
-    password: password.value // NOTE: storing passwords in localStorage is insecure, but OK for this exercise/test
-  };
+  const u = username.value;
+  const p = password.value;
 
-  // Required alert on submit
-  alert(`Logged in as ${userObj.username}`);
+  // Required alert text
+  alert(`Logged in as ${u}`);
 
   if (checkbox.checked) {
-    // Save credentials
-    localStorage.setItem("user", JSON.stringify(userObj));
+    // Tests expect separate keys "username" and "password"
+    localStorage.setItem("username", u);
+    localStorage.setItem("password", p);
+    existing.style.display = "inline-block";
   } else {
-    // Remove previously stored credentials
-    localStorage.removeItem("user");
+    // If "Remember Me" unchecked, remove any saved credentials
+    localStorage.removeItem("username");
+    localStorage.removeItem("password");
+    existing.style.display = "none";
   }
-
-  // ensure existing button visibility matches current storage
-  updateExistingButtonVisibility();
 });
 
-// "Login as existing user" button behaviour
+// Login as existing user behaviour
 existing.addEventListener("click", function () {
-  const stored = localStorage.getItem("user");
-  if (stored) {
-    const saved = JSON.parse(stored);
-    alert(`Logged in as ${saved.username}`);
+  const savedUsername = localStorage.getItem("username");
+  if (savedUsername) {
+    alert(`Logged in as ${savedUsername}`);
   } else {
-    // Defensive: hide button if somehow clicked when no user exists
-    updateExistingButtonVisibility();
+    // defensive: hide if nothing saved
+    existing.style.display = "none";
   }
 });

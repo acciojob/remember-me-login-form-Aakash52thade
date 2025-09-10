@@ -8,24 +8,23 @@
 <body>
   <h1>Login Form</h1>
 
-  <form id="loginForm">
-    <!-- Username -->
+  <form id="loginForm" action="#">
+    <!-- Labels must exist and match tests exactly (note the colon) -->
+    <label for="username">Username:</label>
     <input type="text" placeholder="Username" id="username" />
 
-    <!-- Password -->
+    <label for="password">Password:</label>
     <input type="password" placeholder="Password" id="password" />
 
-    <!-- Remember me -->
+    <label for="checkbox">Remember me:</label>
     <input type="checkbox" id="checkbox" />
-    <label for="checkbox">Remember me</label>
 
-    <!-- Submit -->
     <input type="submit" id="submit" value="Submit" />
 
-    <!-- Existing user (hidden initially) -->
-    <button type="button" id="existing" style="display:none;">Login as existing user</button>
+    <!-- hidden initially so "should('not.be.visible')" passes -->
+    <button type="button" id="existing" style="display: none;">Login as existing user</button>
   </form>
 
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
